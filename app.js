@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const _ = require('lodash');
+const port = process.env.PORT || 3000;
 
 const app = express();
 
@@ -46,10 +47,10 @@ const listSchema = {
 
 const List = mongoose.model("List", listSchema);
 
-app.get("/", function(req, res) {
+app.get("/", (req, res) => {
 
   Item.find({}, (err, foundItems) => {
-
+    res.type('html').send(html);
     if (foundItems.length === 0) {
       Item.insertMany(defaultItems, (err) => {
         if (err) {
@@ -143,5 +144,5 @@ app.get("/about", (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log("Server started on port 3000");
+  console.log(`Example app listening on port ${port}!`);
 });
