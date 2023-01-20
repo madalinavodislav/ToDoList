@@ -14,8 +14,8 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static("public"));
 
-mongoose.set('strictQuery', false);
-mongoose.connect('mongodb+srv://Madalina:Primabazadedate@cluster0.duotza2.mongodb.net/todolistDB', {
+mongoose.set('strictQuery', true);
+mongoose.connect('mongodb://127.0.0.1:27017/todolistDB', {
   useNewUrlParser: true
 });
 
@@ -142,6 +142,6 @@ app.get("/about", (req, res) => {
   res.render("about");
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log("Connected succesfully!");
+app.listen(3000, () => {
+console.log('currently listening on port 3000');
 });
