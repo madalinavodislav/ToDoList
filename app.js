@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const _ = require('lodash');
+const PORT = process.env.PORT || 3000
 
 const app = express();
 
@@ -14,10 +15,16 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static("public"));
 
-mongoose.set('strictQuery', true);
-mongoose.connect('mongodb://127.0.0.1:27017/todolistDB', {
-  useNewUrlParser: true
-});
+const connectDB = async () => {
+  try {
+    mongoose.set('strictQuery', false);
+    const conn = await mongoose.connect('mongodb+srv://Madalina:Primabazadedate@cluster0.duotza2.mongodb.net/todolistDB');
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
 
 const itemsSchema = new mongoose.Schema({
   name: String
@@ -142,6 +149,8 @@ app.get("/about", (req, res) => {
   res.render("about");
 });
 
-app.listen(3000, () => {
-console.log('currently listening on port 3000');
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log("listening for requests");
+    });
 });
