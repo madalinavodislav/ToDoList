@@ -4,11 +4,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const _ = require('lodash');
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
+require("dotenv").config();
 
 const app = express();
 
 app.set('view engine', 'ejs');
+mongoose.set('strictQuery', true);
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -17,8 +19,7 @@ app.use(express.static("public"));
 
 const connectDB = async () => {
   try {
-    mongoose.set('strictQuery', false);
-    const conn = await mongoose.connect('mongodb+srv://Madalina:Primabazadedate@cluster0.duotza2.mongodb.net/todolistDB');
+    const conn = await mongoose.connect('mongodb+srv://'+process.env.ADMIN_NAME +':'+process.env.ADMIN_PASS+'@cluster0.duotza2.mongodb.net/todolistDB');
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.log(error);
